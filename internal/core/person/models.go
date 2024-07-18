@@ -30,7 +30,7 @@ func newPerson(name, document string) (*Person, error) {
 		Name:      name,
 		Document:  document,
 		Active:    true,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}, nil
 }

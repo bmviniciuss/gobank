@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/bmviniciuss/gobank/person/internal/foundation/env"
 	"go.uber.org/zap"
 )
 
@@ -20,14 +19,12 @@ type Storer interface {
 }
 
 type Service struct {
-	cfg    *env.Configuration
 	logger *zap.SugaredLogger
 	storer Storer
 }
 
-func NewService(cfg *env.Configuration, logger *zap.SugaredLogger, storer Storer) *Service {
+func NewService(logger *zap.SugaredLogger, storer Storer) *Service {
 	return &Service{
-		cfg:    cfg,
 		logger: logger,
 		storer: storer,
 	}

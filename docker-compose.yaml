@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: gobank
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - ./person/internal/core/sdk/ddl:/docker-entrypoint-initdb.d
+      - ./internal/core/sdk/ddl:/docker-entrypoint-initdb.d
     networks:
       - net
 

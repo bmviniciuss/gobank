@@ -1,8 +1,8 @@
 package persondb
 
 import (
-	"github.com/bmviniciuss/gobank/person/internal/core/person"
-	"github.com/bmviniciuss/gobank/person/internal/core/person/stores/persondb/generated"
+	"github.com/bmviniciuss/gobank/internal/core/person"
+	"github.com/bmviniciuss/gobank/internal/core/person/stores/persondb/generated"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -23,10 +23,12 @@ func toInsertPersonParams(p *person.Person) generated.InsertPersonParams {
 		Document: p.Document,
 		Active:   p.Active,
 		CreatedAt: pgtype.Timestamptz{
-			Time: p.CreatedAt,
+			Time:  p.CreatedAt,
+			Valid: true,
 		},
 		UpdatedAt: pgtype.Timestamptz{
-			Time: p.UpdatedAt,
+			Time:  p.UpdatedAt,
+			Valid: true,
 		},
 	}
 }
