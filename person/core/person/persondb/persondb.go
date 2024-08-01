@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/bmviniciuss/gobank/person/core/person"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 )
@@ -75,4 +76,32 @@ func (s *Store) Create(ctx context.Context, p *person.Person) error {
 	}
 
 	return nil
+}
+
+const findByID = `
+	SELECT 
+		uuid, name, document, active, created_at, updated_at 
+	FROM person.person 
+	WHERE uuid = $1 AND active = true
+	LIMIT 1;
+	`
+
+func (s *Store) FindByID(ctx context.Context, id uuid.UUID) (person.Person, error) {
+	lggr := s.logger
+	stmt, err := s.db.PreparexContext(ctx, findByID)
+	if err != nil {
+		lggr.With(zap.Error(err)).Error("Got error preparing statement")
+		return person.Person{}, err
+	}
+
+	var personRow findPersonByDocumentRow
+	err = stmt.QueryRowxContext(ctx, id).StructScan(&personRow)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return person.Person{}, person.ErrPersonNotFound
+		}
+		lggr.With(zap.Error(err)).Error("Got error querying row")
+		return person.Person{}, err
+	}
+	return personRow.toPerson(), nil
 }

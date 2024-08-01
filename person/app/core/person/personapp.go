@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bmviniciuss/gobank/person/core/person"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -36,5 +37,18 @@ func (app *App) Create(ctx context.Context, np NewPerson) (Person, error) {
 	}
 	var person Person
 	person.FromPerson(p)
+	return person, nil
+}
+
+func (app *App) FindByID(ctx context.Context, id uuid.UUID) (Person, error) {
+	lggr := app.logger
+	lggr.Info("Finding person by id")
+	p, err := app.personService.FindByID(ctx, id)
+	if err != nil {
+		lggr.With(zap.Error(err)).Error("Got error finding person")
+		return Person{}, err
+	}
+	var person Person
+	person.FromPerson(&p)
 	return person, nil
 }

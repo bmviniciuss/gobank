@@ -9,5 +9,10 @@ Content-Type: application/json
 
 {
   "name": "Vinicius Barbosa",
-  "document": "123123123122"
+  "document": "1231231231222"
 }
+
+
+###
+GET http://{{path}}/v1/person/01910f6d-5f5d-7824-a640-8483af1b0709
+Content-Type: application/json

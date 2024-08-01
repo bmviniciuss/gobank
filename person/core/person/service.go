@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -15,6 +16,7 @@ var (
 
 type Storer interface {
 	FindByDocument(ctx context.Context, document string) (*Person, error)
+	FindByID(ctx context.Context, id uuid.UUID) (Person, error)
 	Create(ctx context.Context, p *Person) error
 }
 
@@ -55,4 +57,8 @@ func (s *Service) Create(ctx context.Context, cp CreatePerson) (*Person, error) 
 		return nil, err
 	}
 	return p, nil
+}
+
+func (s *Service) FindByID(ctx context.Context, id uuid.UUID) (Person, error) {
+	return s.storer.FindByID(ctx, id)
 }

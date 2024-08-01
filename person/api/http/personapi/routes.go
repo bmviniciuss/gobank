@@ -28,4 +28,5 @@ func Routes(r chi.Router, cfg Config) {
 		}),
 	)
 	r.Post("/v1/person", api.create)
+	r.Get("/v1/person/{id}", api.findByID)
 }
