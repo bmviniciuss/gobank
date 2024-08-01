@@ -1,0 +1,38 @@
+package logger
+
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+type Config struct {
+	Service string
+}
+
+func New(cfg Config) *zap.SugaredLogger {
+	// Configure logger options
+	config := zap.Config{
+		Encoding:         "json",
+		Level:            zap.NewAtomicLevelAt(zapcore.DebugLevel),
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stderr"},
+		EncoderConfig: zapcore.EncoderConfig{
+			MessageKey:     "message",
+			LevelKey:       "level",
+			TimeKey:        "time",
+			CallerKey:      "caller",
+			EncodeLevel:    zapcore.CapitalLevelEncoder,
+			EncodeTime:     zapcore.ISO8601TimeEncoder,
+			EncodeDuration: zapcore.SecondsDurationEncoder,
+			EncodeCaller:   zapcore.ShortCallerEncoder,
+		},
+	}
+
+	// Create logger
+	logger, _ := config.Build()
+
+	// Create sugared logger
+	sugaredLogger := logger.Sugar()
+	sugaredLogger.With(zap.String("service_name", cfg.Service))
+	return sugaredLogger
+}

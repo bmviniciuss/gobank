@@ -1,0 +1,13 @@
+@path = localhost:3000
+
+GET http://{{path}}/v1/health
+Content-Type: application/json
+
+###
+POST http://{{path}}/v1/person
+Content-Type: application/json
+
+{
+  "name": "Vinicius Barbosa",
+  "document": "123123123122"
+}

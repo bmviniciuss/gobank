@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres
+    container_name: person-db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: person
+      POSTGRES_PASSWORD: person
+      POSTGRES_DB: person
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./ddl:/docker-entrypoint-initdb.d
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  pg_data:
